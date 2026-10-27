@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SaveVault — Preset & Config Central</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -34,13 +34,15 @@
       }
     }
   </script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <!-- Оставлен один надежный источник иконок через CDN -->
+  <link href="https://cloudflare.com" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js"></script>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+<body class="min-h-screen bg-[#090d16] text-gray-100 flex flex-col justify-between selection:bg-brand-500 selection:text-white">
 
   <!-- TOP HEADER -->
-  <header class="border-b border-dark-border bg-dark-card/80 backdrop-blur-md sticky top-0 z-40">
+  <header class="border-b border-dark-border bg-[#111827]/80 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFilters()">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-purple flex items-center justify-center shadow-lg shadow-brand-500/20">
@@ -64,7 +66,7 @@
     
     <!-- HERO & SEARCH BAR -->
     <div class="mb-10 text-center max-w-3xl mx-auto space-y-4">
-      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
         Центральное хранилище <span class="text-brand-500">пресетов</span> и <span class="text-accent-emerald">ссылок</span>
       </h1>
       <p class="text-gray-400 text-sm sm:text-base">
@@ -75,7 +77,7 @@
         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
           <i class="fa-solid fa-magnifying-glass text-lg"></i>
         </div>
-        <input type="text" id="search-input" oninput="handleSearch()" placeholder="Поиск по названию, тегам или коду (напр. #DragonsDogma2, hyprland)..." 
+        <input type="text" id="search-input" oninput="handleSearch()" placeholder="Поиск по названием, тегам или коду (напр. #DragonsDogma2, hyprland)..." 
                class="w-full pl-11 pr-10 py-3.5 bg-dark-card border border-dark-border rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none text-gray-200 placeholder-gray-500 transition-all shadow-inner">
         <button id="clear-search" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white">
           <i class="fa-solid fa-xmark"></i>
@@ -157,198 +159,33 @@
         </button>
       </div>
 
-      <!-- LOGIN FORM -->
-      <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+      <!-- LOGIN / REGISTER FORM CONTAINER -->
+      <form id="form-auth" onsubmit="handleAuthSubmit(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Логин</label>
-          <input type="text" id="login-username" required class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none focus:border-brand-500">
+          <label for="auth-email" class="block text-sm font-medium text-gray-400 mb-1">Email-адрес</label>
+          <input type="email" id="auth-email" required 
+                 class="w-full px-3 py-2.5 bg-[#1f2937] border border-dark-border rounded-lg text-gray-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none placeholder-gray-600" 
+                 placeholder="name@example.com">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Пароль</label>
-          <input type="password" id="login-password" required class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none focus:border-brand-500">
+          <label for="auth-password" class="block text-sm font-medium text-gray-400 mb-1">Пароль</label>
+          <input type="password" id="auth-password" required 
+                 class="w-full px-3 py-2.5 bg-[#1f2937] border border-dark-border rounded-lg text-gray-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none placeholder-gray-600" 
+                 placeholder="••••••••">
         </div>
-        <p class="text-xs text-gray-500 italic">Для входа администратором используйте: <span class="font-mono text-brand-500">admin / admin</span></p>
-        <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-500 font-bold text-white rounded-xl transition-all shadow-lg shadow-brand-600/30">
-          Войти в аккаунт
-        </button>
-      </form>
-
-      <!-- REGISTER FORM -->
-      <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-        <div>
-          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Придумайте логин</label>
-          <input type="text" id="reg-username" required class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none focus:border-brand-500">
+        <div id="register-only-fields" class="hidden">
+          <label for="auth-password-confirm" class="block text-sm font-medium text-gray-400 mb-1">Подтвердите пароль</label>
+          <input type="password" id="auth-password-confirm" 
+                 class="w-full px-3 py-2.5 bg-[#1f2937] border border-dark-border rounded-lg text-gray-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none placeholder-gray-600" 
+                 placeholder="••••••••">
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Придумайте пароль</label>
-          <input type="password" id="reg-password" required class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none focus:border-brand-500">
-        </div>
-        <button type="submit" class="w-full py-3 bg-accent-purple hover:opacity-90 font-bold text-white rounded-xl transition-all shadow-lg shadow-purple-600/30">
-          Зарегистрироваться
+        <button type="submit" id="auth-submit-btn" 
+                class="w-full mt-2 py-2.5 rounded-lg font-semibold bg-brand-600 text-white hover:bg-brand-700 transition-all shadow-md">
+          Войти
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ADMIN CONTROL PANEL MODAL -->
-  <div id="modal-admin-panel" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-    <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-      <div class="px-6 py-4 border-b border-dark-border flex items-center justify-between bg-dark-bg/50">
-        <div class="flex items-center space-x-3">
-          <i class="fa-solid fa-sliders text-brand-500 text-xl"></i>
-          <h2 class="text-lg font-bold">Панель администратора</h2>
-        </div>
-        <button onclick="closeModal('modal-admin-panel')" class="text-gray-400 hover:text-white">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <div class="p-6 overflow-y-auto space-y-8 flex-grow">
-        <!-- USER MANAGEMENT SECTION -->
-        <div>
-          <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 flex items-center">
-            <i class="fa-solid fa-users mr-2 text-brand-500"></i> Пользователи системы
-          </h3>
-          <div class="overflow-x-auto border border-dark-border rounded-xl">
-            <table class="w-full text-left text-sm text-gray-300">
-              <thead class="bg-dark-bg text-xs uppercase text-gray-400 font-mono">
-                <tr>
-                  <th class="p-3">Логин</th>
-                  <th class="p-3">Роль</th>
-                  <th class="p-3 text-right">Действия</th>
-                </tr>
-              </thead>
-              <tbody id="users-table-body" class="divide-y divide-dark-border">
-                <!-- Injected via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- DATABASE BACKUP SECTION -->
-        <div>
-          <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 flex items-center">
-            <i class="fa-solid fa-database mr-2 text-accent-emerald"></i> Резервное копирование и экспорт
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <button onclick="exportJSON()" class="p-4 bg-dark-bg border border-dark-border hover:border-brand-500/50 rounded-xl text-left transition-all">
-              <i class="fa-solid fa-download text-brand-500 text-xl mb-2"></i>
-              <div class="font-bold text-sm">Скачать JSON</div>
-              <div class="text-xs text-gray-500">Экспорт всех элементов в файл</div>
-            </button>
-            <label class="p-4 bg-dark-bg border border-dark-border hover:border-accent-purple/50 rounded-xl text-left transition-all cursor-pointer">
-              <i class="fa-solid fa-upload text-accent-purple text-xl mb-2"></i>
-              <div class="font-bold text-sm">Импорт JSON</div>
-              <div class="text-xs text-gray-500">Загрузить базу из файла</div>
-              <input type="file" onchange="importJSON(event)" accept=".json" class="hidden">
-            </label>
-            <button onclick="resetToDefaults()" class="p-4 bg-dark-bg border border-dark-border hover:border-rose-500/50 rounded-xl text-left transition-all group">
-              <i class="fa-solid fa-rotate-left text-rose-500 text-xl mb-2 group-hover:rotate-180 transition-transform"></i>
-              <div class="font-bold text-sm text-rose-400">Сброс к Демо</div>
-              <div class="text-xs text-gray-500">Восстановить исходные данные</div>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ITEM EDITOR MODAL (ADD / EDIT) -->
-  <div id="modal-editor" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-    <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 relative shadow-2xl">
-      <button onclick="closeModal('modal-editor')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-
-      <h2 id="editor-title" class="text-xl font-bold mb-6">Создать новую запись</h2>
-
-      <form id="form-item" onsubmit="saveItem(event)" class="space-y-4">
-        <input type="hidden" id="edit-item-id">
-
-        <div>
-          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Тип элемента</label>
-          <select id="item-type" onchange="toggleItemTypeFields()" class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none focus:border-brand-500">
-            <option value="code">Код / Слайдеры / Пресет</option>
-            <option value="links">Агрегатор ссылок</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Название записи</label>
-          <input type="text" id="item-title" required placeholder="Например: Dragon's Dogma 2 — Эльфийка Пресет" class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none focus:border-brand-500">
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Тег / Категория</label>
-            <input type="text" id="item-tag" required placeholder="#DragonsDogma2, #Linux" class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none focus:border-brand-500">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Иконка (FontAwesome class)</label>
-            <input type="text" id="item-icon" placeholder="fa-gamepad, fa-terminal" class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none focus:border-brand-500">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Краткое описание</label>
-          <input type="text" id="item-desc" placeholder="Пояснение к пресету или списку..." class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none focus:border-brand-500">
-        </div>
-
-        <!-- CODE SPECIFIC FIELDS -->
-        <div id="field-code-container">
-          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Содержимое кода / параметров</label>
-          <textarea id="item-code" rows="6" placeholder="Вставьте скрипт, дотфайл или слайдеры внешности..." class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white font-mono text-xs outline-none focus:border-brand-500"></textarea>
-        </div>
-
-        <!-- LINKS SPECIFIC FIELDS -->
-        <div id="field-links-container" class="hidden space-y-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Тип списка по умолчанию</label>
-              <select id="item-list-style" class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none">
-                <option value="disc">Маркированный (Точки)</option>
-                <option value="decimal">Нумерованный (1, 2, 3)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Размер текста</label>
-              <select id="item-font-size" class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white outline-none">
-                <option value="sm">Small (Мелкий)</option>
-                <option value="base" selected>Base (Стандартный)</option>
-                <option value="lg">Large (Крупный)</option>
-                <option value="xl">XL (Очень крупный)</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Список ссылок (Каждая с новой строки: Название | URL)</label>
-            <textarea id="item-links-raw" rows="6" placeholder="Steam Store | https://store.steampowered.com&#10;Nexus Mods | https://nexusmods.com" class="w-full px-4 py-2.5 bg-dark-input border border-dark-border rounded-xl text-white font-mono text-xs outline-none focus:border-accent-emerald"></textarea>
-          </div>
-        </div>
-
-        <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-500 font-bold text-white rounded-xl transition-all shadow-lg shadow-brand-600/30">
-          Сохранить элемент
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- DETAIL MODAL FOR CARDS -->
-  <div id="modal-detail" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-    <div class="bg-dark-card border border-dark-border rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-      <div class="px-6 py-4 border-b border-dark-border flex items-center justify-between">
-        <h2 id="detail-title" class="text-lg font-bold">Просмотр элемента</h2>
-        <button onclick="closeModal('modal-detail')" class="text-gray-400 hover:text-white">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-      <div id="detail-content" class="p-6 overflow-y-auto space-y-4">
-        <!-- Injected dynamically via JS -->
-      </div>
-    </div>
-  </div>
-
-  <script src="js/app.js"></script>
 </body>
 </html>
