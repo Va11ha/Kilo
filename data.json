@@ -1,0 +1,76 @@
+{
+  "items": [
+    {
+      "id": "item-1",
+      "type": "code",
+      "title": "Dragon's Dogma 2 — Эльфийка Пресет",
+      "tag": "#DragonsDogma2",
+      "icon": "fa-gamepad",
+      "desc": "Полные параметры слайдеров лица и тела для создания пресета эльфийки-чародейки.",
+      "code": "--- BODY SLIDERS ---\nHeight: 168cm\nWeight: -20\nTorso Depth: 0\nMuscle Mass: 15\n\n--- HEAD & FACE ---\nHead Size: -10\nSkin Type: 3 (Tone 12)\nEye Size: +15\nEye Color: Emerald Green (Preset 42)\nTattoo Pattern: #14 (Opacity 80%)"
+    },
+    {
+      "id": "item-2",
+      "type": "code",
+      "title": "Arch Linux / Hyprland Dotfiles Setup",
+      "tag": "#ArchLinux",
+      "icon": "fa-terminal",
+      "desc": "Быстрая инициализация окружения Hyprland, Waybar и SwayNC.",
+      "code": "#!/bin/bash\n# Quick Setup Script for Hyprland\nsudo pacman -S --noconfirm hyprland waybar swaync kitty rofi-wayland\nmkdir -p ~/.config/hypr\ncurl -s https://raw.githubusercontent.com/user/dots/main/hyprland.conf > ~/.config/hypr/hyprland.conf\necho 'Done! Launching Hyprland...'"
+    },
+    {
+      "id": "item-3",
+      "type": "links",
+      "title": "Ресурсы для модификации и кастомизации",
+      "tag": "#Mods",
+      "icon": "fa-layer-group",
+      "desc": "Полезные сервисы и трекеры модов для RPG и симуляторов.",
+      "listStyle": "disc",
+      "fontSize": "base",
+      "links": [
+        {
+          "label": "NexusMods Hub",
+          "url": "https://www.nexusmods.com"
+        },
+        {
+          "label": "GitHub Arch Wiki",
+          "url": "https://wiki.archlinux.org"
+        },
+        {
+          "label": "ProtonDB — Совместимость игр",
+          "url": "https://www.protondb.com"
+        }
+      ]
+    },
+    {
+      "id": "item-4",
+      "type": "links",
+      "title": "Быстрый доступ к Прокси и Сетям",
+      "tag": "#Proxy",
+      "icon": "fa-network-wired",
+      "desc": "Панели управления прокси-серверами и хостингом.",
+      "listStyle": "decimal",
+      "fontSize": "lg",
+      "links": [
+        {
+          "label": "Proxys.io Панель управления",
+          "url": "https://proxys.io"
+        },
+        {
+          "label": "Beget Хостинг аккаунт",
+          "url": "https://beget.com"
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "role": "admin"
+    },
+    {
+      "username": "user",
+      "role": "user"
+    }
+  ]
+}
