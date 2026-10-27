@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+body { 
+  font-family: 'Plus Jakarta Sans', sans-serif; 
+  background-color: #090d16; 
+  color: #f3f4f6; 
+}
+
+code, pre, .font-mono { 
+  font-family: 'JetBrains Mono', monospace; 
+}
+
+.text-size-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-size-base { font-size: 1rem; line-height: 1.5rem; }
+.text-size-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-size-xl { font-size: 1.25rem; line-height: 1.75rem; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #090d16; }
+::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #374151; }
